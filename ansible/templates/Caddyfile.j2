@@ -1,0 +1,19 @@
+{{ domain_name }} {
+  respond "{{ domain_name }}"
+}
+
+{{ tf_domain_name }} {
+  respond /api/* "Access denied" 403 {
+    close
+  }
+
+  rewrite * /mirror/v1{uri}
+  reverse_proxy tf-terrashine:80
+}
+
+{{ s3_domain_name }} {
+  tls {
+    key_type rsa4096
+  }
+  reverse_proxy tf-minio:9000
+}

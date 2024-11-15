@@ -1,0 +1,14 @@
+---
+
+db_username: terrashine
+db_basename: terrashine
+
+tf_domain_name: tf.{{ domain_name }}
+
+s3_domain_name: s3.{{ domain_name }}
+s3_storage: /data
+s3_bucketname: terrashine-bucket
+s3_region: us-east-1
+s3_username: minio
+
+tor_https_proxy: socks5://tf-tor:9150

@@ -1,0 +1,6 @@
+.env
+Caddyfile
+torrc
+secure
+data
+ansible/group_vars

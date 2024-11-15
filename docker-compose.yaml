@@ -1,0 +1,51 @@
+services:
+  tf-caddy:
+    image: caddy:2.8.4
+    container_name: tf-caddy
+    ports:
+      - 80:80
+      - 443:443
+      - "443:443/udp"
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./data/caddy/data:/data
+      - ./data/caddy/config:/config
+
+  tf-tor:
+    image: hardandheavy/tor:8
+    container_name: tf-tor
+    volumes:
+      - ./torrc:/etc/tor/torrc
+
+  tf-db:
+    image: postgres:17.0
+    container_name: tf-db
+    env_file: .env
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  tf-minio:
+    image: quay.io/minio/minio:RELEASE.2024-11-07T00-52-20Z
+    container_name: tf-minio
+    command: ["server", "$AWS_STORAGE"]
+    env_file: .env
+    volumes:
+      - ./data/minio/data:/data
+      - ./data/minio/config:/root/.minio
+      - ./data/seed:/seed
+      - ./seed/minio.sh:/seed.sh
+
+  tf-terrashine:
+    image: hardandheavy/terrashine:12
+    container_name: tf-terrashine
+    command: >
+      bash -c "
+      sh /seed.sh;
+      terrashine server"
+    depends_on:
+      - tf-tor
+    env_file: .env
+    volumes:
+      - ./data/seed:/seed
+      - ./seed/terrashine.sh:/seed.sh

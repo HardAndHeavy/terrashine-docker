@@ -1,0 +1,26 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  vars_prompt:
+    - name: domain_name
+      prompt: Domain name
+      default: "{{ lookup('file', '../secure/var/domain_name', errors='ignore') | default('example.ru', true) }}"
+      private: false
+
+  tasks:
+    - name: Creating a variable cache folder secure/var
+      ansible.builtin.file:
+        path: ../secure/var
+        state: directory
+    - name: Save domain_name
+      local_action: copy content={{ domain_name }} dest=../secure/var/domain_name
+
+    - name: Creating a folder ansible/group_vars/all
+      ansible.builtin.file:
+        path: ./group_vars/all
+        state: directory
+    - name: Creating a file vars
+      ansible.builtin.template:
+        src: vars.yml.j2
+        dest: ./group_vars/all/vars.yml

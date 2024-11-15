@@ -1,0 +1,54 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  vars_prompt:
+    - name: tor_bridge_line_1
+      prompt: Tor bridge line 1
+      default: "{{ lookup('file', '../secure/var/tor_bridge_line_1', errors='ignore') | default('tor_bridge_line_1', true) }}"
+      private: false
+    - name: tor_bridge_line_2
+      prompt: Tor bridge line 2
+      default: "{{ lookup('file', '../secure/var/tor_bridge_line_2', errors='ignore') | default('tor_bridge_line_2', true) }}"
+      private: false
+    - name: tor_bridge_line_3
+      prompt: Tor bridge line 3
+      default: "{{ lookup('file', '../secure/var/tor_bridge_line_3', errors='ignore') | default('tor_bridge_line_3', true) }}"
+      private: false
+    - name: tor_bridge_line_4
+      prompt: Tor bridge line 4
+      default: "{{ lookup('file', '../secure/var/tor_bridge_line_4', errors='ignore') | default('tor_bridge_line_4', true) }}"
+      private: false
+
+  tasks:
+    - name: Creating a variable cache folder secure/var
+      ansible.builtin.file:
+        path: ../secure/var
+        state: directory
+    - name: Save tor_bridge_line_1
+      local_action: copy content={{ tor_bridge_line_1 }} dest=../secure/var/tor_bridge_line_1
+    - name: Save tor_bridge_line_2
+      local_action: copy content={{ tor_bridge_line_2 }} dest=../secure/var/tor_bridge_line_2
+    - name: Save tor_bridge_line_3
+      local_action: copy content={{ tor_bridge_line_3 }} dest=../secure/var/tor_bridge_line_3
+    - name: Save tor_bridge_line_4
+      local_action: copy content={{ tor_bridge_line_4 }} dest=../secure/var/tor_bridge_line_4
+    - name: Creating passwords
+      ansible.builtin.set_fact:
+        db_password: "{{ lookup('ansible.builtin.password', '../secure/var/db_password', length=64, chars=['ascii_letters', 'digits']) }}"
+        s3_password: "{{ lookup('ansible.builtin.password', '../secure/var/s3_password', length=64, chars=['ascii_letters', 'digits']) }}"
+
+    - name: Creating a file Caddyfile
+      ansible.builtin.template:
+        src: Caddyfile.j2
+        dest: ../Caddyfile
+
+    - name: Creating a file tor
+      ansible.builtin.template:
+        src: torrc.j2
+        dest: ../torrc
+
+    - name: Creating an environment variable file
+      ansible.builtin.template:
+        src: .env.j2
+        dest: ../.env

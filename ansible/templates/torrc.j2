@@ -1,0 +1,11 @@
+ClientTransportPlugin obfs4 exec /usr/bin/lyrebird
+UseBridges 1
+Bridge {{ tor_bridge_line_1 }}
+Bridge {{ tor_bridge_line_2 }}
+Bridge {{ tor_bridge_line_3 }}
+Bridge {{ tor_bridge_line_4 }}
+HardwareAccel 1
+Log notice stdout
+DNSPort 0.0.0.0:8853
+SocksPort 0.0.0.0:9150
+DataDirectory /var/lib/tor
