@@ -17,10 +17,15 @@ Get Tor bridges from the Telegram bot [@GetBridgesBot](https://t.me/GetBridgesBo
 
 Go to the server and execute the commands:
 ```bash
-make gen # Set domain name and 4 Tor bridges
+make gen # Set {{ domain_name }} and 4 Tor bridges
 make run
 make seed
 ```
+
+The mirror will be available at `https://tf.{{ domain_name }}/`.
+
+### Use
+Go to your work computer.
 
 Set terraform configuration `~/.terraformrc`:
 ```
@@ -31,7 +36,7 @@ provider_installation {
 }
 ```
 
-Initialize your Terraform workspace:
+Initialize the Terraform workspace in the project folder:
 ```bash
 terraform init
 ```
