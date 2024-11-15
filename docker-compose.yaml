@@ -37,7 +37,7 @@ services:
       - ./seed/minio.sh:/seed.sh
 
   tf-terrashine:
-    image: hardandheavy/terrashine:12
+    image: hardandheavy/terrashine:13
     container_name: tf-terrashine
     command: >
       bash -c "

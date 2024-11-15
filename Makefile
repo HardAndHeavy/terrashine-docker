@@ -37,3 +37,5 @@ run:
 
 stop:
 	docker compose stop
+
+.PHONY: seed
