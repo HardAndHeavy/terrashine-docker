@@ -1,7 +1,7 @@
 # Terrashine in Docker
-A terraform provider mirror implemented as a caching proxy in Docker. [Terrashine](https://github.com/Isawan/terrashine) is a terraform provider mirror implementation that works by automatically caching dependencies as providers are requested.
+[Terrashine](https://github.com/Isawan/terrashine) is a terraform provider mirror implementation that works by automatically caching dependencies as providers are requested.
 
-Use cases:
+This project allows you to run Terrashine with a couple of commands and solves the following tasks:
 * Bypassing [Hashicorp locks](https://github.com/hashicorp/terraform/issues/30620#issuecomment-1061200339)
 * Avoid rate-limits when actively developing in ephemeral CI environments (github has a 60 request per hour rate limit)
 * Faster downloads of terraform providers, particularly in CI environments
